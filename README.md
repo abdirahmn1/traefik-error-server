@@ -16,3 +16,30 @@ cd traefik-errorserver
 docker build -t traefik-errorserver .
 docker-compose up -d
 ```
+
+## Deployment
+
+Add the `error` middleware to your services behind traefik.
+
+An example of a service that may use the error middleware is shown below.
+
+```yaml
+services:
+  nginx:
+    container_name: nginx
+    image: nginx
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable= true"
+      - "traefik.http.routers.nginx-router.rule= Host(`nginx.mydomain`)"
+      # Replace `web` with whatever you :80 entrypoint name is.
+      - "traefik.http.routers.nginx-router.entrypoints=web"
+      - "traefik.http.routers.nginx-router.middlewares=error-pages-middleware@docker"
+      - "traefik.http.routers.nginx-router.service=nginx"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+
+networks:
+  proxy:
+    external: true
+```
