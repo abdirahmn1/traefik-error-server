@@ -14,7 +14,7 @@ Make your traefik error pages look good 💅
 git clone https://github.com/abdirahmn1/traefik-error-server.git
 cd traefik-errorserver
 docker build -t traefik-errorserver .
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Deployment
